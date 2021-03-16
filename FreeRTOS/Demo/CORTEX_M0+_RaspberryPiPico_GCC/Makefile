@@ -34,7 +34,7 @@ LDFLAGS = -T ./scripts/mps2_m3.ld --specs=nosys.specs
 LDFLAGS += -Xlinker -Map=${BUILD_DIR}/output.map
 
 CFLAGS += -march=armv6-m -mcpu=cortex-m0plus -mthumb
-CFLAGS += -nostartfiles -mthumb -mcpu=cortex-m3 -Wno-error=implicit-function-declaration
+CFLAGS += -Wno-error=implicit-function-declaration
 CFLAGS += -Wno-builtin-declaration-mismatch -Werror
 
 ifeq ($(DEBUG), 1)
@@ -42,7 +42,7 @@ ifeq ($(DEBUG), 1)
 else
     CFLAGS += -O3
 endif
-    CFLAGS += -fstrict-aliasing -Wstrict-aliasing -Wno-error=address-of-packed-member
+    CFLAGS += -fstrict-aliasing -Wstrict-aliasing
 
 OBJ_FILES := $(SOURCE_FILES:%.c=$(BUILD_DIR)/%.o)
 
