@@ -1,0 +1,17 @@
+#ifndef _HARDWARE_PLATFORM_DEFS_H_
+#define _HARDWARE_PLATFORM_DEFS_H_
+
+#ifndef PICO_STACK_SIZE
+#define PICO_STACK_SIZE 2048u
+#endif
+
+#ifndef PICO_HEAP_SIZE
+#define PICO_HEAP_SIZE 2048u
+#endif
+
+#ifndef PICO_FLASH_SIZE_BYTES
+#define PICO_FLASH_SIZE_BYTES (2 * 1024 * 1024)
+#endif
+
+#endif
+
