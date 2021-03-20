@@ -21,16 +21,17 @@ SOURCE_FILES += ${KERNEL_DIR}/portable/MemMang/heap_3.c
 
 # INCLUDE_DIRS += -I$(FREERTOS_DIR)/Demo/CORTEX_M3_MPS2_QEMU_GCC
 # INCLUDE_DIRS += -I$(FREERTOS_DIR)/Demo/CORTEX_M3_MPS2_QEMU_GCC/CMSIS
+INCLUDE_DIRS += -I$(FREERTOS_DIR)/Demo/CORTEX_M0+_RaspberryPiPico_GCC
 INCLUDE_DIRS += -I$(KERNEL_DIR)/include
 INCLUDE_DIRS += -I$(KERNEL_DIR)/portable/GCC/ARM_CM0
 
 
 # Blinky Demo
-SOURCE_FILES += main_blinky.c
+SOURCE_FILES += blinky.c
 
 DEFINES :=  -DHEAP3
 
-LDFLAGS = -T ./scripts/mps2_m3.ld --specs=nosys.specs
+LDFLAGS = -T ./linker_scripts/memmap_default.ld --specs=nosys.specs
 LDFLAGS += -Xlinker -Map=${BUILD_DIR}/output.map
 
 CFLAGS += -march=armv6-m -mcpu=cortex-m0plus -mthumb
