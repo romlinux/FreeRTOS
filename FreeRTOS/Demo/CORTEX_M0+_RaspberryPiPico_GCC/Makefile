@@ -31,7 +31,7 @@ SOURCE_FILES += blinky.c
 
 DEFINES :=  -DHEAP3
 
-LDFLAGS = -T ./linker_scripts/memmap_default.ld --specs=nosys.specs
+LDFLAGS = -T ./linker_scripts/memmap_default.ld --specs=nosys.specs -nostartfiles
 LDFLAGS += -Xlinker -Map=${BUILD_DIR}/output.map
 
 CFLAGS += -march=armv6-m -mcpu=cortex-m0plus -mthumb
