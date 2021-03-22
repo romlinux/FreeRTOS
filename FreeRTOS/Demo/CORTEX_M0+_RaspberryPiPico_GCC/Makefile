@@ -1,4 +1,6 @@
 BIN := blinky.bin
+CC = arm-none-eabi-gcc
+BIN := RTOSDemo.axf
 
 FREERTOS_DIR_REL := ../../../FreeRTOS
 FREERTOS_DIR := $(abspath $(FREERTOS_DIR_REL))
