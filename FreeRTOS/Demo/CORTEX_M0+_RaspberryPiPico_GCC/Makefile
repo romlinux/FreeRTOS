@@ -46,7 +46,7 @@ $(BUILD_DIR)/$(BIN): boot_stage2 $(OBJ_FILES) $(BUILD_DIR)/crt0.o
 
 
 $(BUILD_DIR)/crt0.o: crt0.S
-	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
+	$(CC) $(CFLAGS) $(LDFLAGS) -c $< -o $@
 
 boot_stage2:
 	$(MAKE) -C boot2
