@@ -1,6 +1,6 @@
 BIN := blinky.bin
 CC = arm-none-eabi-gcc
-BIN := RTOSDemo.axf
+BIN := RTOSDemo.elf
 
 FREERTOS_DIR_REL := ../../../FreeRTOS
 FREERTOS_DIR := $(abspath $(FREERTOS_DIR_REL))
@@ -41,7 +41,7 @@ CFLAGS += $(INCLUDE_DIRS)
 .PHONY: clean
 
 $(BUILD_DIR)/$(BIN): boot_stage2 $(OBJ_FILES)
-	$(CC) -ffunction-sections -fdata-sections $(CFLAGS) $(LDFLAGS) $(OBJ_FILES) -o $(@)
+	$(CC) -ffunction-sections -fdata-sections $(CFLAGS) $(LDFLAGS) $(OBJ_FILES) -o $(@) boot2/build/boot2/boot2_checksummed.S
 
 boot_stage2:
 	$(MAKE) -C boot2
