@@ -1,7 +1,4 @@
-CC = arm-none-eabi-gcc
-BIN := RTOSDemo.axf
-
-BUILD_DIR := build
+BIN := blinky.bin
 
 FREERTOS_DIR_REL := ../../../FreeRTOS
 FREERTOS_DIR := $(abspath $(FREERTOS_DIR_REL))
@@ -25,25 +22,12 @@ INCLUDE_DIRS += -I$(FREERTOS_DIR)/Demo/CORTEX_M0+_RaspberryPiPico_GCC
 INCLUDE_DIRS += -I$(KERNEL_DIR)/include
 INCLUDE_DIRS += -I$(KERNEL_DIR)/portable/GCC/ARM_CM0
 
+include common.mk
 
 # Blinky Demo
 SOURCE_FILES += blinky.c
 
 DEFINES :=  -DHEAP3
-
-LDFLAGS = -T ./linker_scripts/memmap_default.ld --specs=nosys.specs -nostartfiles
-LDFLAGS += -Xlinker -Map=${BUILD_DIR}/output.map
-
-CFLAGS += -march=armv6-m -mcpu=cortex-m0plus -mthumb
-CFLAGS += -Wno-error=implicit-function-declaration
-CFLAGS += -Wno-builtin-declaration-mismatch -Werror
-
-ifeq ($(DEBUG), 1)
-    CFLAGS += -ggdb3 -Og
-else
-    CFLAGS += -O3
-endif
-    CFLAGS += -fstrict-aliasing -Wstrict-aliasing
 
 OBJ_FILES := $(SOURCE_FILES:%.c=$(BUILD_DIR)/%.o)
 
@@ -52,8 +36,11 @@ CFLAGS += $(INCLUDE_DIRS)
 
 .PHONY: clean
 
-$(BUILD_DIR)/$(BIN) : $(OBJ_FILES)
-	$(CC) -ffunction-sections -fdata-sections $(CFLAGS) $(LDFLAGS) $+ -o $(@)
+$(BUILD_DIR)/$(BIN): boot_stage2 $(OBJ_FILES)
+	$(CC) -ffunction-sections -fdata-sections $(CFLAGS) $(LDFLAGS) $(OBJ_FILES) -o $(@)
+
+boot_stage2:
+	$(MAKE) -C boot2
 
 %.d: %.c
 	@set -e; rm -f $@; \
@@ -64,10 +51,10 @@ $(BUILD_DIR)/$(BIN) : $(OBJ_FILES)
 INCLUDES := $(SOURCE_FILES:%.c=$(BUILD_DIR)/%.d)
 -include $(INCLUDES)
 
-${BUILD_DIR}/%.o : %.c Makefile
+${BUILD_DIR}/%.o: %.c Makefile
 	-mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(CPPFLAGS) -MMD -c $< -o $@
 
 clean:
+	$(MAKE) -C boot2 clean
 	-rm -rf build
-
