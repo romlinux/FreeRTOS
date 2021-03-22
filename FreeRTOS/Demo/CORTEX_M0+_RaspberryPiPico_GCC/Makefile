@@ -24,6 +24,8 @@ INCLUDE_DIRS += -I$(FREERTOS_DIR)/Demo/CORTEX_M0+_RaspberryPiPico_GCC
 INCLUDE_DIRS += -I$(KERNEL_DIR)/include
 INCLUDE_DIRS += -I$(KERNEL_DIR)/portable/GCC/ARM_CM0
 
+LINKER_SCRIPT = linker_scripts/memmap_default.ld
+
 include common.mk
 
 # Blinky Demo
