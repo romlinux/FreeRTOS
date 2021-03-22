@@ -4,6 +4,12 @@ include ../common.mk
 
 BOOT2_SOURCES += boot2_w25q080.S
 BOOT2_INCLUDE_DIRS += -I ../includes -I ../includes/regs
+
+$(BUILD_DIR)/boot2/boot2_checksummed.S: $(BUILD_DIR)/boot2/boot2.bin
+	python3 pad_checksum -s 0xffffffff $(BUILD_DIR)/boot2/boot2.bin $@
+$(BUILD_DIR)/boot2/boot2.bin: $(BUILD_DIR)/boot2/boot2.elf
+	$(OBJCOPY) -Obinary $< $@
+
 $(BUILD_DIR)/boot2/boot2.elf: $(BUILD_DIR)/boot2/boot2.o
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(BOOT2_INCLUDE_DIRS) $(LDFLAGS) $(BUILD_DIR)/boot2/boot2.o -o $@

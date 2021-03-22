@@ -1,4 +1,5 @@
 CC = arm-none-eabi-gcc
+OBJCOPY = arm-none-eabi-objcopy
 BUILD_DIR := build
 LDFLAGS = -T $(LINKER_SCRIPT) --specs=nosys.specs -nostartfiles
 LDFLAGS += -Xlinker -Map=${BUILD_DIR}/output.map
