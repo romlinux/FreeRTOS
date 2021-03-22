@@ -4,11 +4,11 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "hardware/regs/m0plus.h"
-#include "hardware/platform_defs.h"
-#include "hardware/regs/addressmap.h"
-#include "hardware/regs/sio.h"
-#include "pico/binary_info/defs.h"
+#include "regs/m0plus.h"
+#include "platform_defs.h"
+#include "regs/addressmap.h"
+#include "regs/sio.h"
+#include "binary_info_defs.h"
 
 #ifdef NDEBUG
 #ifndef COLLAPSE_IRQS

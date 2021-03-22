@@ -18,11 +18,12 @@ SOURCE_FILES += $(KERNEL_DIR)/timers.c
 SOURCE_FILES += $(KERNEL_DIR)/event_groups.c
 SOURCE_FILES += ${KERNEL_DIR}/portable/MemMang/heap_3.c
 
-# INCLUDE_DIRS += -I$(FREERTOS_DIR)/Demo/CORTEX_M3_MPS2_QEMU_GCC
-# INCLUDE_DIRS += -I$(FREERTOS_DIR)/Demo/CORTEX_M3_MPS2_QEMU_GCC/CMSIS
 INCLUDE_DIRS += -I$(FREERTOS_DIR)/Demo/CORTEX_M0+_RaspberryPiPico_GCC
 INCLUDE_DIRS += -I$(KERNEL_DIR)/include
 INCLUDE_DIRS += -I$(KERNEL_DIR)/portable/GCC/ARM_CM0
+
+INCLUDE_DIRS += -I includes
+INCLUDE_DIRS += -I includes/regs
 
 LINKER_SCRIPT = linker_scripts/memmap_default.ld
 
@@ -40,8 +41,12 @@ CFLAGS += $(INCLUDE_DIRS)
 
 .PHONY: clean
 
-$(BUILD_DIR)/$(BIN): boot_stage2 $(OBJ_FILES)
-	$(CC) -ffunction-sections -fdata-sections $(CFLAGS) $(LDFLAGS) $(OBJ_FILES) -o $(@) boot2/build/boot2/boot2_checksummed.S
+$(BUILD_DIR)/$(BIN): boot_stage2 $(OBJ_FILES) $(BUILD_DIR)/crt0.o
+	$(CC) -ffunction-sections -fdata-sections $(CFLAGS) $(LDFLAGS) $(OBJ_FILES) $(BUILD_DIR)/crt0.o -o $(@) boot2/build/boot2/boot2_checksummed.S
+
+
+$(BUILD_DIR)/crt0.o: crt0.S
+	$(CC) $(CFLAGS) $(LDFLAGS) $< -o $@
 
 boot_stage2:
 	$(MAKE) -C boot2
