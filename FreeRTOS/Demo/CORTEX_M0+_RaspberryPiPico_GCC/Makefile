@@ -45,7 +45,7 @@ CFLAGS += $(INCLUDE_DIRS)
 .PHONY: clean
 
 $(BUILD_DIR)/$(BIN): boot_stage2 $(OBJ_FILES) $(BUILD_DIR)/crt0.o
-	$(CC) -ffunction-sections -fdata-sections $(CFLAGS) $(LDFLAGS) $(OBJ_FILES) $(BUILD_DIR)/crt0.o -o $(@) boot2/build/boot2/boot2_checksummed.S
+	$(CC) $(CFLAGS) $(LDFLAGS) -Wl,--build-id=none -Wl,--gc-sections $(OBJ_FILES) $(BUILD_DIR)/crt0.o -o $(@) boot2/build/boot2/boot2_checksummed.S
 
 
 $(BUILD_DIR)/crt0.o: crt0.S

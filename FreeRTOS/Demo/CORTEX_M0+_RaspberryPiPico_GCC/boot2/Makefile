@@ -1,6 +1,7 @@
 LINKER_SCRIPT = ../linker_scripts/boot_stage2.ld
 
 include ../common.mk
+LDFLAGS += -nostartfiles
 
 BOOT2_SOURCES += boot2_w25q080.S
 BOOT2_INCLUDE_DIRS += -I ../includes -I ../includes/regs
