@@ -10,6 +10,7 @@ FREERTOS_PLUS_DIR_REL := ../../../FreeRTOS-Plus
 FREERTOS_PLUS_DIR := $(abspath $(FREERTOS_PLUS_DIR_REL))
 
 # SOURCE_FILES += init/startup.c  syscall.c main.c
+
 SOURCE_FILES += $(KERNEL_DIR)/portable/GCC/ARM_CM0/port.c
 SOURCE_FILES += $(KERNEL_DIR)/tasks.c
 SOURCE_FILES += $(KERNEL_DIR)/list.c
@@ -28,6 +29,8 @@ INCLUDE_DIRS += -I includes/regs
 LINKER_SCRIPT = linker_scripts/memmap_default.ld
 
 include common.mk
+
+SOURCE_FILES += bootrom.c
 
 # Blinky Demo
 SOURCE_FILES += blinky.c
