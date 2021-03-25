@@ -1,6 +1,5 @@
-BIN := blinky.bin
 CC = arm-none-eabi-gcc
-BIN := RTOSDemo.elf
+BIN := blinky.elf
 
 FREERTOS_DIR_REL := ../../../FreeRTOS
 FREERTOS_DIR := $(abspath $(FREERTOS_DIR_REL))
@@ -8,8 +7,6 @@ KERNEL_DIR := $(FREERTOS_DIR)/Source
 
 FREERTOS_PLUS_DIR_REL := ../../../FreeRTOS-Plus
 FREERTOS_PLUS_DIR := $(abspath $(FREERTOS_PLUS_DIR_REL))
-
-# SOURCE_FILES += init/startup.c  syscall.c main.c
 
 SOURCE_FILES += $(KERNEL_DIR)/portable/GCC/ARM_CM0/port.c
 SOURCE_FILES += $(KERNEL_DIR)/tasks.c
@@ -24,13 +21,15 @@ INCLUDE_DIRS += -I$(KERNEL_DIR)/include
 INCLUDE_DIRS += -I$(KERNEL_DIR)/portable/GCC/ARM_CM0
 
 INCLUDE_DIRS += -I includes
-INCLUDE_DIRS += -I includes/regs
-
 LINKER_SCRIPT = linker_scripts/memmap_default.ld
 
 include common.mk
 
 SOURCE_FILES += bootrom.c
+SOURCE_FILES += clocks.c
+SOURCE_FILES += pll.c
+SOURCE_FILES += startup.c
+SOURCE_FILES += xosc.c
 
 # Blinky Demo
 SOURCE_FILES += blinky.c
