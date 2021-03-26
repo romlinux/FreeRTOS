@@ -39,8 +39,8 @@ __vectors:
 .word isr_svcall
 .word isr_invalid // Reserved, should never fire
 .word isr_invalid // Reserved, should never fire
-.word isr_pendsv
-.word isr_systick
+.word PendSV_Handler
+.word SysTick_Handler
 .word isr_irq0
 .word isr_irq1
 .word isr_irq2

@@ -27,6 +27,7 @@ include common.mk
 
 SOURCE_FILES += bootrom.c
 SOURCE_FILES += clocks.c
+SOURCE_FILES += gpio.c
 SOURCE_FILES += pll.c
 SOURCE_FILES += startup.c
 SOURCE_FILES += xosc.c
