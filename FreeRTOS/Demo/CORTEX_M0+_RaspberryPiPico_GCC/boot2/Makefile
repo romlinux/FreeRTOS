@@ -19,5 +19,9 @@ $(BUILD_DIR)/boot2/boot2.o: $(BOOT2_SOURCES)
 	mkdir -p $(@D)
 	$(CC) $(CFLAGS) $(BOOT2_INCLUDE_DIRS) -c $(BOOT2_SOURCES) -o $@
 
+$(BUILD_DIR)/elf2uf2/elf2uf2: $(ELF2_UF2_SOURCES)
+	mkdir -p $(@D)
+	$(HOSTCXX) $(HOSTCXXFLAGS) $(ELF2_UF2_INCLUDE_DIRS) $< -o $@
+
 clean:
 	-rm -rf build

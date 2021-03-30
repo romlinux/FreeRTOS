@@ -1,5 +1,6 @@
 CC = arm-none-eabi-gcc
 BIN := blinky.elf
+TARGET_BASE := $(basename $(BIN))
 
 FREERTOS_DIR_REL := ../../../FreeRTOS
 FREERTOS_DIR := $(abspath $(FREERTOS_DIR_REL))
@@ -42,10 +43,11 @@ OBJ_FILES := $(SOURCE_FILES:%.c=$(BUILD_DIR)/%.o)
 CPPFLAGS += $(DEFINES)
 CFLAGS += $(INCLUDE_DIRS)
 
-.PHONY: clean
+.PHONY: clean elf2uf2
 
-$(BUILD_DIR)/$(BIN): boot_stage2 $(OBJ_FILES) $(BUILD_DIR)/crt0.o
+$(BUILD_DIR)/$(BIN): boot_stage2 $(OBJ_FILES) $(BUILD_DIR)/crt0.o elf2uf2
 	$(CC) $(CFLAGS) $(LDFLAGS) -Wl,--build-id=none -Wl,--gc-sections $(OBJ_FILES) $(BUILD_DIR)/crt0.o -o $(@) boot2/build/boot2/boot2_checksummed.S
+	elf2uf2/build/elf2uf2/elf2uf2 $(BUILD_DIR)/$(BIN) $(BUILD_DIR)/$(TARGET_BASE).uf2
 
 
 $(BUILD_DIR)/crt0.o: crt0.S
@@ -53,6 +55,9 @@ $(BUILD_DIR)/crt0.o: crt0.S
 
 boot_stage2:
 	$(MAKE) -C boot2
+
+elf2uf2:
+	$(MAKE) -C elf2uf2
 
 %.d: %.c
 	@set -e; rm -f $@; \
@@ -69,4 +74,5 @@ ${BUILD_DIR}/%.o: %.c Makefile
 
 clean:
 	$(MAKE) -C boot2 clean
+	$(MAKE) -C elf2uf2 clean
 	-rm -rf build
