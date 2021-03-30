@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# Based on pad_checksum as provided in the pico sdk.
 
 import argparse
 import binascii

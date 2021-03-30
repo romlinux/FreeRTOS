@@ -1,3 +1,12 @@
+/*
+ * Copyright (c) 2020 Raspberry Pi (Trading) Ltd.
+ *
+ * SPDX-License-Identifier: BSD-3-Clause
+ *
+ * Based on runtime.c in pico-sdk
+ */
+
+
 #include "types.h"
 #include "clocks.h"
 #include "padsbank0.h"
