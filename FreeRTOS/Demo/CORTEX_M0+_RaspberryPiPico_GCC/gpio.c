@@ -6,9 +6,7 @@
 
 #include "types.h"
 #include "gpio.h"
-
 #include "iobank0.h"
-
 
 static gpio_irq_callback_t _callbacks[NUM_CORES];
 
@@ -70,66 +68,8 @@ void gpio_set_oeover(uint32_t gpio, uint32_t value) {
     );
 }
 
-#if 0
-static void gpio_irq_handler(void) {
-    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ?
-                                           &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
-    for (uint gpio = 0; gpio < NUM_BANK0_GPIOS; gpio++) {
-        io_rw_32 *status_reg = &irq_ctrl_base->ints[gpio / 8];
-        uint events = (*status_reg >> 4 * (gpio % 8)) & 0xf;
-        if (events) {
-            // TODO: If both cores care about this event then the second core won't get the irq?
-            gpio_acknowledge_irq(gpio, events);
-            gpio_irq_callback_t callback = _callbacks[get_core_num()];
-            if (callback) {
-                callback(gpio, events);
-            }
-        }
-    }
-}
-
-static void _gpio_set_irq_enabled(uint32_t gpio, uint32_t events, bool enabled, io_irq_ctrl_hw_t *irq_ctrl_base) {
-    // Clear stale events which might cause immediate spurious handler entry
-    gpio_acknowledge_irq(gpio, events);
-
-    io_rw_32 *en_reg = &irq_ctrl_base->inte[gpio / 8];
-    events <<= 4 * (gpio % 8);
-
-    if (enabled)
-        hw_set_bits(en_reg, events);
-    else
-        hw_clear_bits(en_reg, events);
-}
-
-void gpio_set_irq_enabled(uint32_t gpio, uint32_t events, bool enabled) {
-    // Separate mask/force/status per-core, so check which core called, and
-    // set the relevant IRQ controls.
-    io_irq_ctrl_hw_t *irq_ctrl_base = get_core_num() ?
-                                           &iobank0_hw->proc1_irq_ctrl : &iobank0_hw->proc0_irq_ctrl;
-    _gpio_set_irq_enabled(gpio, events, enabled, irq_ctrl_base);
-}
-
-void gpio_set_irq_enabled_with_callback(uint32_t gpio, uint32_t events, bool enabled, gpio_irq_callback_t callback) {
-    gpio_set_irq_enabled(gpio, events, enabled);
-
-    // TODO: Do we want to support a callback per GPIO pin?
-    // Install IRQ handler
-    _callbacks[get_core_num()] = callback;
-    irq_set_exclusive_handler(IO_IRQ_BANK0, gpio_irq_handler);
-    irq_set_enabled(IO_IRQ_BANK0, true);
-}
-
-void gpio_set_dormant_irq_enabled(uint32_t gpio, uint32_t events, bool enabled) {
-    io_irq_ctrl_hw_t *irq_ctrl_base = &iobank0_hw->dormant_wake_irq_ctrl;
-    _gpio_set_irq_enabled(gpio, events, enabled, irq_ctrl_base);
-}
-
-void gpio_acknowledge_irq(uint32_t gpio, uint32_t events) {
-    iobank0_hw->intr[gpio / 8] = events << 4 * (gpio % 8);
-}
-#endif 
-
 #define DEBUG_PIN_MASK (((1u << PICO_DEBUG_PIN_COUNT)-1) << PICO_DEBUG_PIN_BASE)
+
 void gpio_debug_pins_init() {
     gpio_init_mask(DEBUG_PIN_MASK);
     gpio_set_dir_masked(DEBUG_PIN_MASK, DEBUG_PIN_MASK);

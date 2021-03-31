@@ -51,10 +51,12 @@ to exclude the API function. */
 header file. */
 #define configASSERT( x ) if( ( x ) == 0 ) { taskDISABLE_INTERRUPTS(); for( ;; ); }
 
-/* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS
-standard names - or at least those used in the unmodified vector table. */
-#define vPortSVCHandler SVCall_Handler
-#define xPortPendSVHandler PendSV_Handler
-#define xPortSysTickHandler SysTick_Handler
+/*
+ * Definitions that map the FreeRTOS port interrupt handlers those used in the
+ * unmodified vector table.
+ */
+//#define vPortSVCHandler SVCall_Handler
+#define xPortPendSVHandler isr_pendsv
+#define xPortSysTickHandler isr_systick
 
 #endif /* FREERTOS_CONFIG_H */

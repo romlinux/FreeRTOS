@@ -8,6 +8,7 @@ static void prvBlinkyTask( void *pvParameters );
 #define LED_PIN 25
 #define blinkyTASK_PRIORITY         ( tskIDLE_PRIORITY + 1 )
 #define TASK_DELAY  1000
+
 int main()
 {
     gpio_init( LED_PIN );
